@@ -24,9 +24,6 @@ export default function Contact() {
     setErrorMsg("");
     
     try {
-      // NOTE: These are dummy keys for EmailJS. 
-      // For a fully working email system, you need to replace these with your actual EmailJS Service ID, Template ID, and Public Key.
-      // However, the UI and validation are 100% functional.
       await emailjs.send(
         'service_9094r77', 
         'template_723hjxs', 
@@ -41,15 +38,11 @@ export default function Contact() {
       
       setIsSuccess(true);
       reset();
-    } catch (err) {
+      setIsSubmitting(false);
+    } catch (err: any) {
       console.log(err);
-      // Fallback for demo purposes since we don't have real API keys yet.
-      // In a real scenario without keys, it fails, so we mock success here for the UI flow.
-      setTimeout(() => {
-        setIsSuccess(true);
-        reset();
-        setIsSubmitting(false);
-      }, 1500);
+      setErrorMsg(err.text || "Failed to send message. Please try again later.");
+      setIsSubmitting(false);
     }
   };
 
