@@ -36,7 +36,7 @@ export default function Contact() {
           subject: data.subject,
           message: data.message,
         }, 
-        'public_key_dummy'
+        'j-LEO--NMQn_pAme-'
       );
       
       setIsSuccess(true);
