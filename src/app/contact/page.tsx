@@ -28,8 +28,8 @@ export default function Contact() {
       // For a fully working email system, you need to replace these with your actual EmailJS Service ID, Template ID, and Public Key.
       // However, the UI and validation are 100% functional.
       await emailjs.send(
-        'service_dummy', 
-        'template_dummy', 
+        'service_9094r77', 
+        'template_723hjxs', 
         {
           from_name: data.name,
           from_email: data.email,
