@@ -1,0 +1,27 @@
+---
+title: Savage Excuse Generator
+slug: excuse-generator
+summary: An offline Android app with 1000+ handcrafted excuses across nine categories, generated at build time by a Python script into a bundled JSON payload.
+type: app
+status: beta
+date: 2026-03-22
+stack: [Kotlin, Room, Coroutines, Python]
+tags: [android, kotlin, offline]
+links:
+  repo: https://github.com/saksham456456/Excuse-Generator
+source: https://github.com/saksham456456/Excuse-Generator
+---
+
+## Idea
+
+A playful Android app that serves witty, relatable excuses for everyday situations, from a strict boss to "tech issues".
+
+## Key decisions
+
+- **Build-time content generation**: a Python script produces 1000+ excuses in nine categories and bundles them as local JSON, so the app works fully **offline**.
+- **Personalisation**: the app learns your name and persona during onboarding.
+- **Kotlin + Room + Coroutines** for a product-quality local-first architecture.
+
+## Stack
+
+Kotlin · Room · Coroutines · Python (build-time script)

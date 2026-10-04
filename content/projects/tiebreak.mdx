@@ -1,0 +1,37 @@
+---
+title: Tiebreak
+slug: tiebreak
+summary: A pairwise-voting ranking engine. People vote on head-to-head matchups, and Elo-style ratings turn those votes into community tier lists.
+type: web
+status: live
+date: 2026-10-02
+featured: true
+stack: [Next.js, Supabase, PostgreSQL, Upstash Redis, Tailwind CSS]
+tags: [web, ranking, realtime]
+links:
+  live: https://tiebreak-omega.vercel.app
+  repo: https://github.com/saksham456456/Tiebreak
+demo:
+  url: https://tiebreak-omega.vercel.app
+  title: Tiebreak live demo
+  allow: [allow-same-origin, allow-forms]
+source: https://github.com/saksham456456/Tiebreak
+---
+
+## Problem
+
+Top-10 lists are subjective, and rating ten things at once is hard. Choosing between two is easy.
+
+## Approach
+
+Tiebreak shows binary matchups ("React vs Svelte") and feeds each vote into an **Elo rating system** that uses rating deviation and Wilson lower bounds. Over time the community's votes add up to a stable tier list.
+
+## Key decisions
+
+- **Redis-backed streams (Upstash)** absorb concurrent votes so Postgres isn't locked on every swipe.
+- **Supabase Auth with anonymous identities** so people can vote right away and merge into an account later.
+- **Swipeable 3D cards** make voting fast and tactile.
+
+## Stack
+
+Next.js (App Router, Server Actions) · Supabase Postgres · Upstash Redis · Tailwind CSS

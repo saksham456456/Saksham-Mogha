@@ -1,0 +1,37 @@
+---
+title: Scanzap
+slug: scanzap
+summary: A fast, single-file QR code generator with custom designs, vector export, a pay-as-you-go credit system and a Firebase backend.
+type: tool
+status: live
+date: 2026-07-04
+stack: [HTML, CSS, JavaScript, Firebase, Razorpay]
+tags: [web, tool, payments]
+links:
+  live: https://scanzap.vercel.app/
+  repo: https://github.com/saksham456456/Scanzap
+demo:
+  url: https://scanzap.vercel.app
+  title: Scanzap QR generator
+  allow: [allow-same-origin, allow-forms]
+source: https://github.com/saksham456456/Scanzap
+---
+
+## Problem
+
+Most QR generators either lock features behind a monthly subscription or load heavy frameworks just to draw a square.
+
+## Approach
+
+The whole frontend is **one `index.html` file** with no build tools and no framework, for a very short time-to-interactive. A **credit system** replaces subscriptions: guests get free credits, and premium exports use credits.
+
+## Features
+
+- Six QR types: URL, text, email, phone, Wi-Fi and vCard
+- Custom colours, dot styles, eye shapes and canvas-based logo embedding
+- High-resolution PNG and pure SVG export
+- Firebase Auth and Firestore, Cloud Functions for payment verification, Razorpay checkout
+
+## Stack
+
+HTML · CSS · JavaScript · Firebase · Razorpay

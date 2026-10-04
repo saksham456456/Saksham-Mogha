@@ -1,0 +1,31 @@
+---
+title: Warzone Intelligence
+slug: warzone-intelligence
+summary: An interactive 3D globe of active global conflicts. An AI web-search pipeline turns current events into structured map overlays.
+type: web
+status: beta
+date: 2026-05-30
+featured: true
+stack: [JavaScript, Globe.gl, WebGL, Node.js, OpenAI]
+tags: [ai, data-visualization, 3d]
+links:
+  repo: https://github.com/saksham456456/warzone-intelligence
+source: https://github.com/saksham456456/warzone-intelligence
+---
+
+## Problem
+
+News about armed conflicts is scattered across many sources and hard to see as a whole.
+
+## Approach
+
+Warzone Intelligence uses OpenAI's web-search models to find and normalize current information on active conflicts, sorts each one by severity, and renders the results on a WebGL Earth built with **Globe.gl** using NASA Blue Marble imagery.
+
+## Key decisions
+
+- **LLM as a structuring layer**: web search plus schema-shaped output becomes plottable data.
+- **Globe.gl / WebGL** for a smooth, explorable 3D view instead of a flat map.
+
+## Stack
+
+Globe.gl · WebGL · Node.js · OpenAI
