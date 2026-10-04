@@ -1,0 +1,6 @@
+Contact: https://saksham-mogha.vercel.app/contact
+Expires: 2027-10-04T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://saksham-mogha.vercel.app/.well-known/security.txt
+Policy: https://saksham-mogha.vercel.app/privacy
+Acknowledgments: https://saksham-mogha.vercel.app/about
