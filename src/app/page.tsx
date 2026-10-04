@@ -1,3 +1,4 @@
+import { ArrowRight, Smartphone, Code, Gamepad2, Sparkles, Terminal, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import { site } from "../../content/site";
 import { getFeatured, getPosts } from "@/lib/content";
@@ -10,131 +11,170 @@ export default function Home() {
   const latestPosts = getPosts().slice(0, 3);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
-      {/* Hero Section */}
-      <section className="space-y-6">
-        <div className="flex flex-col-reverse md:flex-row md:items-center justify-between gap-8">
-          <div className="space-y-4 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-mono">
-              <span className="w-2 h-2 rounded-full bg-emerald-400" />
-              <span>Available for high-impact engineering & building</span>
-            </div>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 space-y-24">
+      {/* 3D Hero Section (V1 Signature Look) */}
+      <section className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center pt-8">
+        <div className="space-y-6">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-indigo-300 text-xs font-mono">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span>Independent App Developer & AI Engineer</span>
+          </div>
 
-            <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-white">
+          <div className="space-y-2">
+            <h2 className="text-xl font-mono uppercase tracking-widest text-indigo-400 font-semibold">
+              Official Portal
+            </h2>
+            <h1 className="text-5xl sm:text-7xl font-extrabold tracking-tight text-white leading-none">
               {site.name}
             </h1>
-
-            <p className="text-lg sm:text-xl text-slate-300 leading-relaxed">
-              {site.tagline}
-            </p>
-
-            <p className="text-sm sm:text-base text-slate-400 font-mono">
-              <span className="text-indigo-400 font-semibold">{site.motto}</span> Active since {site.activeSince} with 40+ public repositories spanning web, mobile, and on-device ML.
-            </p>
-
-            {/* Quick Actions */}
-            <div className="flex flex-wrap gap-3 pt-2">
-              <Link
-                href="/projects"
-                className="px-5 py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-sm transition-colors"
-              >
-                Browse Projects
-              </Link>
-              <Link
-                href="/apps"
-                className="px-5 py-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-medium text-sm transition-colors"
-              >
-                Play Store Hub
-              </Link>
-              <Link
-                href="/contact"
-                className="px-5 py-2.5 rounded-lg bg-transparent hover:bg-slate-900 text-slate-300 border border-slate-800 font-medium text-sm transition-colors"
-              >
-                Get in Touch →
-              </Link>
+            <div className="text-3xl sm:text-5xl font-extrabold tracking-tight">
+              Crafting <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-pink-400 to-cyan-400">
+                Digital Experiences
+              </span>
             </div>
           </div>
 
-          {/* Persona Avatar / Badge */}
-          <div className="flex-shrink-0">
-            <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-2xl bg-gradient-to-tr from-indigo-900 via-slate-800 to-indigo-600 p-1 shadow-2xl">
-              <div className="w-full h-full rounded-xl bg-slate-950 flex flex-col items-center justify-center p-4 text-center border border-indigo-500/20">
-                <span className="text-3xl font-mono font-bold text-indigo-400">SM</span>
-                <span className="text-xs font-mono uppercase text-slate-400 mt-1">SAKSHAM.DEV</span>
-                <span className="text-[10px] text-emerald-400 font-mono mt-1">BUILDER</span>
-              </div>
-            </div>
+          <p className="text-lg sm:text-xl text-gray-300 leading-relaxed max-w-xl">
+            Welcome to the official developer portal of Saksham Mogha. I build innovative, high-performance applications, on-device AI engines, and games for the Google Play Store and modern web.
+          </p>
+
+          <p className="text-sm font-mono text-gray-400 italic">
+            &ldquo;{site.motto}&rdquo;
+          </p>
+          
+          <div className="flex flex-wrap gap-4 pt-2">
+            <Link 
+              href="/contact" 
+              className="px-8 py-4 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition-all shadow-lg hover:shadow-indigo-500/20 flex items-center gap-2 group text-sm"
+            >
+              Get in Touch
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+            <Link 
+              href="/projects" 
+              className="px-8 py-4 bg-white/10 text-white font-semibold rounded-full hover:bg-white/20 transition-all backdrop-blur-sm border border-white/15 text-sm"
+            >
+              Explore Projects
+            </Link>
+            <Link 
+              href="/support" 
+              className="px-8 py-4 bg-white/5 text-gray-300 font-semibold rounded-full hover:bg-white/10 hover:text-white transition-all backdrop-blur-sm border border-white/10 text-sm"
+            >
+              App Support
+            </Link>
+          </div>
+
+          {/* Verified Identity Tags */}
+          <div className="flex flex-wrap items-center gap-4 pt-4 border-t border-white/10 text-xs font-mono text-gray-400">
+            <span className="text-gray-500 uppercase flex items-center gap-1">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+              Verified Handles:
+            </span>
+            {site.socials.map((soc) => (
+              <ExternalLink
+                key={soc.url}
+                href={soc.url}
+                rel="me"
+                className="text-gray-300 hover:text-indigo-400 transition-colors underline"
+              >
+                {soc.label} ({soc.handle}) ↗
+              </ExternalLink>
+            ))}
           </div>
         </div>
 
-        {/* Verified Social Connections */}
-        <div className="flex flex-wrap items-center gap-4 pt-4 border-t border-slate-800/60 text-xs font-mono text-slate-400">
-          <span className="text-slate-500 uppercase">Verified:</span>
-          {site.socials.map((soc) => (
-            <ExternalLink
-              key={soc.url}
-              href={soc.url}
-              rel="me"
-              className="text-slate-300 hover:text-indigo-400 transition-colors underline"
-            >
-              {soc.label} ({soc.handle}) ↗
-            </ExternalLink>
-          ))}
+        {/* Floating 3D Cards Matrix (V1 signature staggered cards) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="p-6 rounded-2xl bg-white/5 backdrop-blur-lg border border-white/10 hover:bg-white/10 transition-all shadow-2xl hover:scale-[1.02]">
+            <Smartphone className="w-10 h-10 text-indigo-400 mb-4" />
+            <h3 className="text-xl font-bold mb-2 text-white">Utility Apps</h3>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              Android tools & focus companions built in Kotlin and Flutter designed to make your daily life easier and more productive.
+            </p>
+          </div>
+          
+          <div className="p-6 rounded-2xl bg-white/5 backdrop-blur-lg border border-white/10 hover:bg-white/10 transition-all shadow-2xl sm:translate-y-8 hover:scale-[1.02]">
+            <Gamepad2 className="w-10 h-10 text-pink-400 mb-4" />
+            <h3 className="text-xl font-bold mb-2 text-white">Immersive Games</h3>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              Engaging cognitive training, gamified educational blackboard lessons, and interactive 3D WebGL experiences.
+            </p>
+          </div>
+          
+          <div className="p-6 rounded-2xl bg-white/5 backdrop-blur-lg border border-white/10 hover:bg-white/10 transition-all shadow-2xl sm:-translate-y-8 hover:scale-[1.02]">
+            <Code className="w-10 h-10 text-cyan-400 mb-4" />
+            <h3 className="text-xl font-bold mb-2 text-white">Clean Code</h3>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              Architected with strict TypeScript, App Router, on-device WebLLM/WebGPU machine learning, and hardened security nonces.
+            </p>
+          </div>
+
+          <div className="p-6 rounded-2xl bg-white/5 backdrop-blur-lg border border-white/10 hover:bg-white/10 transition-all shadow-2xl hover:scale-[1.02]">
+            <Sparkles className="w-10 h-10 text-amber-400 mb-4" />
+            <h3 className="text-xl font-bold mb-2 text-white">On-Device ML</h3>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              Private, local browser inference without API keys or cloud server costs. Instant response on the GPU.
+            </p>
+          </div>
         </div>
       </section>
 
       {/* Signature Moment: Interactive Terminal */}
-      <section aria-labelledby="terminal-heading" className="my-10">
-        <h2 id="terminal-heading" className="sr-only">Interactive Terminal</h2>
+      <section aria-labelledby="terminal-heading" className="space-y-4">
+        <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-indigo-400">
+          <Terminal className="w-4 h-4" />
+          <span>Interactive Shell Environment</span>
+        </div>
         <TerminalNav />
       </section>
 
-      {/* Live GitHub Activity Stream */}
+      {/* Live GitHub Activity Strip */}
       <GitHubActivityStrip />
 
-      {/* Featured Projects Grid */}
-      <section aria-labelledby="featured-projects" className="my-16">
-        <div className="flex items-center justify-between mb-8">
+      {/* Featured Projects Grid (Glassmorphic 3D styling) */}
+      <section aria-labelledby="featured-projects" className="space-y-8">
+        <div className="flex items-center justify-between">
           <div>
-            <h2 id="featured-projects" className="text-2xl font-bold text-white tracking-tight">
+            <h2 id="featured-projects" className="text-3xl font-extrabold text-white tracking-tight">
               Featured Work
             </h2>
-            <p className="text-sm text-slate-400">Selected production applications and systems.</p>
+            <p className="text-gray-400 text-sm mt-1">High-performance production applications and systems.</p>
           </div>
-          <Link href="/projects" className="text-sm font-medium text-indigo-400 hover:text-indigo-300">
-            View all ({getFeatured().length}+) →
+          <Link href="/projects" className="text-sm font-semibold text-indigo-400 hover:text-indigo-300">
+            View all projects ({getFeatured().length}+) →
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {featured.map((proj) => (
-            <article
+            <div
               key={proj.meta.slug}
-              className="p-6 rounded-2xl bg-slate-900/40 border border-slate-800 hover:border-slate-700 transition-all flex flex-col justify-between"
+              className="p-8 rounded-3xl bg-white/5 backdrop-blur-lg border border-white/10 hover:bg-white/10 transition-all shadow-xl flex flex-col justify-between group hover:border-indigo-500/40"
             >
               <div>
-                <div className="flex items-center justify-between text-xs font-mono mb-3">
-                  <span className="px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 uppercase">
+                <div className="flex items-center justify-between text-xs font-mono mb-4">
+                  <span className="px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 uppercase">
                     {proj.meta.type}
                   </span>
-                  <span className="text-slate-500">{proj.meta.date}</span>
+                  <span className="text-gray-400">{proj.meta.date}</span>
                 </div>
 
-                <h3 className="text-xl font-bold text-white mb-2">
-                  <Link href={`/projects/${proj.meta.slug}`} className="hover:text-indigo-400 transition-colors">
+                <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-indigo-400 transition-colors">
+                  <Link href={`/projects/${proj.meta.slug}`}>
                     {proj.meta.title}
                   </Link>
                 </h3>
 
-                <p className="text-sm text-slate-300 leading-relaxed mb-4">
+                <p className="text-gray-300 text-sm leading-relaxed mb-6">
                   {proj.meta.summary}
                 </p>
 
-                <div className="flex flex-wrap gap-1.5 mb-6">
+                <div className="flex flex-wrap gap-2 mb-8">
                   {proj.meta.stack.map((tech) => (
                     <span
                       key={tech}
-                      className="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-800/80 text-slate-400 border border-slate-700/50"
+                      className="text-xs font-mono px-2.5 py-1 rounded-lg bg-black/40 text-gray-300 border border-white/10"
                     >
                       {tech}
                     </span>
@@ -142,67 +182,67 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between pt-4 border-t border-slate-800/80 text-xs font-mono">
+              <div className="flex items-center justify-between pt-6 border-t border-white/10 text-xs font-mono">
                 <Link
                   href={`/projects/${proj.meta.slug}`}
-                  className="text-indigo-400 hover:text-indigo-300 font-medium"
+                  className="text-indigo-400 hover:text-indigo-300 font-semibold"
                 >
-                  Case Study →
+                  Read Case Study →
                 </Link>
-                <div className="flex gap-3">
+                <div className="flex gap-4">
                   {proj.meta.links.live && (
-                    <ExternalLink href={proj.meta.links.live} className="text-slate-400 hover:text-white underline">
-                      Live ↗
+                    <ExternalLink href={proj.meta.links.live} className="text-gray-300 hover:text-white underline">
+                      Live App ↗
                     </ExternalLink>
                   )}
                   {proj.meta.links.repo && (
-                    <ExternalLink href={proj.meta.links.repo} className="text-slate-400 hover:text-white underline">
+                    <ExternalLink href={proj.meta.links.repo} className="text-gray-300 hover:text-white underline">
                       Code ↗
                     </ExternalLink>
                   )}
                 </div>
               </div>
-            </article>
+            </div>
           ))}
         </div>
       </section>
 
-      {/* Latest Writing */}
+      {/* Latest Technical Dev Logs */}
       {latestPosts.length > 0 && (
-        <section aria-labelledby="latest-writing" className="my-16">
-          <div className="flex items-center justify-between mb-8">
+        <section aria-labelledby="latest-writing" className="space-y-6">
+          <div className="flex items-center justify-between">
             <div>
-              <h2 id="latest-writing" className="text-2xl font-bold text-white tracking-tight">
+              <h2 id="latest-writing" className="text-3xl font-extrabold text-white tracking-tight">
                 Latest Writing
               </h2>
-              <p className="text-sm text-slate-400">Technical insights, architecture notes, and build stories.</p>
+              <p className="text-gray-400 text-sm mt-1">Architecture breakdowns and lessons learned while shipping.</p>
             </div>
-            <Link href="/writing" className="text-sm font-medium text-indigo-400 hover:text-indigo-300">
+            <Link href="/writing" className="text-sm font-semibold text-indigo-400 hover:text-indigo-300">
               All articles →
             </Link>
           </div>
 
           <div className="space-y-4">
             {latestPosts.map((post) => (
-              <article
+              <div
                 key={post.meta.slug}
-                className="p-5 rounded-xl bg-slate-900/30 border border-slate-800/80 hover:border-slate-700 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                className="p-6 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 hover:bg-white/10 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-4"
               >
                 <div>
-                  <h3 className="text-lg font-semibold text-white mb-1">
+                  <h3 className="text-xl font-bold text-white mb-1">
                     <Link href={`/writing/${post.meta.slug}`} className="hover:text-indigo-400 transition-colors">
                       {post.meta.title}
                     </Link>
                   </h3>
-                  <p className="text-sm text-slate-400 line-clamp-1">{post.meta.summary}</p>
+                  <p className="text-sm text-gray-400 line-clamp-1">{post.meta.summary}</p>
                 </div>
-                <div className="flex items-center gap-4 text-xs font-mono text-slate-500 whitespace-nowrap">
+                <div className="flex items-center gap-4 text-xs font-mono text-gray-400 whitespace-nowrap">
                   <time dateTime={post.meta.date}>{post.meta.date}</time>
-                  <Link href={`/writing/${post.meta.slug}`} className="text-indigo-400 hover:text-indigo-300">
+                  <Link href={`/writing/${post.meta.slug}`} className="text-indigo-400 hover:text-indigo-300 font-semibold">
                     Read →
                   </Link>
                 </div>
-              </article>
+              </div>
             ))}
           </div>
         </section>

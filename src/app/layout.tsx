@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { SceneWrapper } from "@/components/3d/SceneWrapper";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { SkipLink } from "@/components/SkipLink";
@@ -74,7 +75,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={inter.variable}>
-      <body className="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans antialiased selection:bg-indigo-500/30 selection:text-white">
+      <body className="bg-black text-white min-h-screen flex flex-col font-sans antialiased selection:bg-indigo-500/30 selection:text-white">
+        <SceneWrapper />
         <SkipLink />
         <JsonLd data={[personLd(), websiteLd()]} />
         <Navbar />

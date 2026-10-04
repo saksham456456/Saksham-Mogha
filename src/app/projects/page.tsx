@@ -31,31 +31,31 @@ export default function ProjectsPage() {
         {projects.map((proj) => (
           <article
             key={proj.meta.slug}
-            className="p-6 rounded-2xl bg-slate-900/40 border border-slate-800 hover:border-slate-700 transition-all flex flex-col justify-between"
+            className="p-8 rounded-3xl bg-white/5 backdrop-blur-md border border-white/10 hover:bg-white/10 transition-all flex flex-col justify-between shadow-xl hover:border-indigo-500/40"
           >
             <div>
-              <div className="flex items-center justify-between text-xs font-mono mb-3">
-                <span className="px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 uppercase">
+              <div className="flex items-center justify-between text-xs font-mono mb-4">
+                <span className="px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 uppercase">
                   {proj.meta.type}
                 </span>
-                <span className="text-slate-500">{proj.meta.date}</span>
+                <span className="text-gray-400">{proj.meta.date}</span>
               </div>
 
-              <h2 className="text-xl font-bold text-white mb-2">
+              <h2 className="text-2xl font-bold text-white mb-3">
                 <Link href={`/projects/${proj.meta.slug}`} className="hover:text-indigo-400 transition-colors">
                   {proj.meta.title}
                 </Link>
               </h2>
 
-              <p className="text-sm text-slate-300 leading-relaxed mb-4">
+              <p className="text-sm text-gray-300 leading-relaxed mb-6">
                 {proj.meta.summary}
               </p>
 
-              <div className="flex flex-wrap gap-1.5 mb-6">
+              <div className="flex flex-wrap gap-2 mb-8">
                 {proj.meta.stack.map((tech) => (
                   <span
                     key={tech}
-                    className="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-800/80 text-slate-400 border border-slate-700/50"
+                    className="text-xs font-mono px-2.5 py-1 rounded-lg bg-black/40 text-gray-300 border border-white/10"
                   >
                     {tech}
                   </span>
@@ -63,7 +63,7 @@ export default function ProjectsPage() {
               </div>
             </div>
 
-            <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs font-mono">
+            <div className="pt-6 border-t border-white/10 flex items-center justify-between text-xs font-mono">
               <Link
                 href={`/projects/${proj.meta.slug}`}
                 className="text-indigo-400 hover:text-indigo-300 font-medium"

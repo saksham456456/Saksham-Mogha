@@ -31,7 +31,7 @@
 }
 
 body {
-  background-color: var(--bg-canvas);
+  background-color: transparent;
   color: var(--text-primary);
   min-height: 100vh;
   display: flex;
