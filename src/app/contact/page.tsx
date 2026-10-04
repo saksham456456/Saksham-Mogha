@@ -1,155 +1,197 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { Send, CheckCircle, Loader2 } from "lucide-react";
-import emailjs from '@emailjs/browser';
+import { TOPICS } from "@/lib/contact-schema";
 
-type FormData = {
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
-};
+export default function ContactPage() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [topic, setTopic] = useState<(typeof TOPICS)[number]>("App support");
+  const [message, setMessage] = useState("");
+  const [websiteHoneypot, setWebsiteHoneypot] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState("");
 
-export default function Contact() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<FormData>();
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
-  const onSubmit = async (data: FormData) => {
-    setIsSubmitting(true);
-    setErrorMsg("");
-    
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("loading");
+    setErrorMessage("");
+    setFieldErrors({});
+
     try {
-      await emailjs.send(
-        'service_9094r77', 
-        'template_723hjxs', 
-        {
-          from_name: data.name,
-          from_email: data.email,
-          subject: data.subject,
-          message: data.message,
-        }, 
-        'j-LEO--NMQn_pAme-'
-      );
-      
-      setIsSuccess(true);
-      reset();
-      setIsSubmitting(false);
-    } catch (err: any) {
-      console.log(err);
-      setErrorMsg(err.text || "Failed to send message. Please try again later.");
-      setIsSubmitting(false);
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-requested-with": "fetch",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          topic,
+          message,
+          website: websiteHoneypot,
+          turnstileToken: turnstileToken || "dev-token-bypass",
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.ok) {
+        setStatus("error");
+        setErrorMessage(data.error || "Failed to send message. Please verify your details.");
+        if (data.fieldErrors) setFieldErrors(data.fieldErrors);
+        return;
+      }
+
+      setStatus("success");
+      setName("");
+      setEmail("");
+      setMessage("");
+    } catch {
+      setStatus("error");
+      setErrorMessage("Network error. Please check your connection and try again.");
     }
   };
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-4">Get in Touch</h1>
-          <p className="text-xl text-gray-400">
-            Have a question, business inquiry, or app issue? Fill out the form below.
-          </p>
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12">
+      <header className="space-y-4">
+        <div className="text-xs font-mono uppercase tracking-wider text-indigo-400">
+          Encrypted Communications
         </div>
+        <h1 className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight">
+          Get in Touch
+        </h1>
+        <p className="text-lg text-slate-300">
+          Have an app support inquiry, engineering proposal, feedback, or data deletion request? Send a secure message directly to Saksham Mogha.
+        </p>
+      </header>
 
-        {isSuccess ? (
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="p-8 bg-green-500/10 border border-green-500/30 rounded-3xl text-center backdrop-blur-md"
+      {status === "success" ? (
+        <div className="p-8 rounded-2xl bg-emerald-950/40 border border-emerald-500/30 text-center space-y-4">
+          <div className="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto text-2xl font-bold">
+            ✓
+          </div>
+          <h2 className="text-2xl font-bold text-white">Message Transmitted Successfully</h2>
+          <p className="text-sm text-slate-300 max-w-md mx-auto">
+            Thank you for reaching out. Your message has been received securely and will be answered promptly.
+          </p>
+          <button
+            type="button"
+            onClick={() => setStatus("idle")}
+            className="px-5 py-2.5 rounded-lg bg-slate-900 border border-slate-700 text-xs font-mono text-slate-200 hover:text-white transition-colors"
           >
-            <CheckCircle className="w-16 h-16 text-green-400 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-white mb-2">Message Sent!</h2>
-            <p className="text-gray-300 mb-6">Thank you for reaching out. We will get back to you as soon as possible.</p>
-            <button 
-              onClick={() => setIsSuccess(false)}
-              className="px-6 py-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors text-sm font-medium"
-            >
-              Send another message
-            </button>
-          </motion.div>
-        ) : (
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-3xl">
-            {errorMsg && (
-              <div className="p-4 bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl text-sm">
-                {errorMsg}
-              </div>
-            )}
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Name</label>
-                <input
-                  {...register("name", { required: "Name is required" })}
-                  className="w-full px-4 py-3 bg-black/50 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-white placeholder-gray-500"
-                  placeholder="John Doe"
-                />
-                {errors.name && <span className="text-red-400 text-xs mt-1 block">{errors.name.message}</span>}
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Email</label>
-                <input
-                  {...register("email", { 
-                    required: "Email is required",
-                    pattern: { value: /^\S+@\S+$/i, message: "Invalid email address" }
-                  })}
-                  className="w-full px-4 py-3 bg-black/50 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-white placeholder-gray-500"
-                  placeholder="john@example.com"
-                />
-                {errors.email && <span className="text-red-400 text-xs mt-1 block">{errors.email.message}</span>}
-              </div>
+            Send Another Message
+          </button>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit} className="p-8 rounded-2xl bg-slate-900/40 border border-slate-800 space-y-6">
+          {status === "error" && errorMessage && (
+            <div className="p-4 rounded-xl bg-red-950/40 border border-red-500/30 text-red-300 text-sm">
+              {errorMessage}
             </div>
+          )}
 
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Subject</label>
+          {/* Honeypot field (hidden from humans, catches bots) */}
+          <div className="hidden" aria-hidden="true" style={{ display: "none" }}>
+            <label htmlFor="form-website-hp">Leave this field blank</label>
+            <input
+              id="form-website-hp"
+              type="text"
+              name="website"
+              value={websiteHoneypot}
+              onChange={(e) => setWebsiteHoneypot(e.target.value)}
+              tabIndex={-1}
+              autoComplete="off"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label htmlFor="contact-name" className="block text-xs font-mono uppercase text-slate-400">
+                Name <span className="text-red-400">*</span>
+              </label>
               <input
-                {...register("subject", { required: "Subject is required" })}
-                className="w-full px-4 py-3 bg-black/50 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-white placeholder-gray-500"
-                placeholder="App Support / Business Inquiry"
+                id="contact-name"
+                type="text"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Your Name"
+                className="w-full px-4 py-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 text-sm"
               />
-              {errors.subject && <span className="text-red-400 text-xs mt-1 block">{errors.subject.message}</span>}
+              {fieldErrors.name && <p className="text-xs text-red-400 font-mono">{fieldErrors.name}</p>}
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Message</label>
-              <textarea
-                {...register("message", { required: "Message is required", minLength: { value: 10, message: "Message must be at least 10 characters" } })}
-                rows={5}
-                className="w-full px-4 py-3 bg-black/50 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-white placeholder-gray-500 resize-none"
-                placeholder="How can we help you?"
+            <div className="space-y-2">
+              <label htmlFor="contact-email" className="block text-xs font-mono uppercase text-slate-400">
+                Email Address <span className="text-red-400">*</span>
+              </label>
+              <input
+                id="contact-email"
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="name@domain.com"
+                className="w-full px-4 py-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 text-sm"
               />
-              {errors.message && <span className="text-red-400 text-xs mt-1 block">{errors.message.message}</span>}
+              {fieldErrors.email && <p className="text-xs text-red-400 font-mono">{fieldErrors.email}</p>}
             </div>
+          </div>
 
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full py-4 bg-white text-black font-bold rounded-xl hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          <div className="space-y-2">
+            <label htmlFor="contact-topic" className="block text-xs font-mono uppercase text-slate-400">
+              Inquiry Topic <span className="text-red-400">*</span>
+            </label>
+            <select
+              id="contact-topic"
+              value={topic}
+              onChange={(e) => setTopic(e.target.value as (typeof TOPICS)[number])}
+              className="w-full px-4 py-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-indigo-500 text-sm font-mono"
             >
-              {isSubmitting ? (
-                <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  Sending...
-                </>
-              ) : (
-                <>
-                  <Send className="w-5 h-5" />
-                  Send Message
-                </>
-              )}
-            </button>
-          </form>
-        )}
-      </motion.div>
+              {TOPICS.map((t) => (
+                <option key={t} value={t}>
+                  {t}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="space-y-2">
+            <label htmlFor="contact-message" className="block text-xs font-mono uppercase text-slate-400">
+              Message <span className="text-red-400">*</span>
+            </label>
+            <textarea
+              id="contact-message"
+              required
+              rows={6}
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Provide specific details regarding your inquiry, project, or app issue..."
+              className="w-full px-4 py-3 rounded-lg bg-slate-950 border border-slate-800 text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 text-sm resize-y"
+            />
+            {fieldErrors.message && <p className="text-xs text-red-400 font-mono">{fieldErrors.message}</p>}
+          </div>
+
+          {/* Privacy and rate limit note */}
+          <div className="text-xs text-slate-500 font-mono">
+            Rate limited per IP. Input sanitized server-side. Zero third-party trackers.
+          </div>
+
+          <button
+            type="submit"
+            disabled={status === "loading"}
+            className="w-full py-3.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+          >
+            {status === "loading" ? "Transmitting..." : "Send Message →"}
+          </button>
+        </form>
+      )}
     </div>
   );
 }
