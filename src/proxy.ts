@@ -28,6 +28,10 @@ export function buildCsp(nonce: string, pathname: string, opts: { dev: boolean; 
       ...(opts.dev ? ["'unsafe-eval'"] : []),
     ],
     "style-src": opts.dev ? ["'self'", "'unsafe-inline'"] : ["'self'", `'nonce-${nonce}'`],
+    // <style> elements stay nonce-locked; inline style *attributes* (used by
+    // Framer Motion / React style props for SSR animation state) are allowed.
+    "style-src-elem": opts.dev ? ["'self'", "'unsafe-inline'"] : ["'self'", `'nonce-${nonce}'`],
+    "style-src-attr": ["'unsafe-inline'"],
     "img-src": ["'self'", "data:", "blob:"],
     "font-src": ["'self'"],
     "connect-src": ["'self'", ...(isContact ? [TURNSTILE] : []), ...(opts.dev ? ["ws:"] : [])],

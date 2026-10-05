@@ -8,6 +8,7 @@ import { SkipLink } from "@/components/SkipLink";
 import { JsonLd } from "@/components/JsonLd";
 import { personLd, websiteLd, absoluteUrl } from "@/lib/seo";
 import { site } from "../../content/site";
+import { SmoothScroll } from "@/components/motion/SmoothScroll";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -76,6 +77,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <body className="bg-black text-white min-h-screen flex flex-col font-sans antialiased selection:bg-indigo-500/30 selection:text-white">
+        <SmoothScroll />
         <SceneWrapper />
         <SkipLink />
         <JsonLd data={[personLd(), websiteLd()]} />

@@ -1,83 +1,163 @@
 @import "tailwindcss";
 
-:root {
-  --bg-canvas: #090d16;
-  --bg-surface: #0f172a;
-  --bg-elevated: #1e293b;
-  --border-color: #334155;
-  --border-subtle: #1e293b;
-  --text-primary: #f8fafc;
-  --text-muted: #94a3b8;
-  --text-subtle: #64748b;
-  --accent-primary: #6366f1;
-  --accent-glow: rgba(99, 102, 241, 0.15);
-  --accent-emerald: #10b981;
-  --accent-cyan: #06b6d4;
+/*
+ * Design tokens (v1 language): black space, glass surfaces, one
+ * indigo -> cyan gradient, pink only as a 3D accent. Inter everywhere.
+ */
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --color-accent: #6366f1;
+  --color-accent-2: #22d3ee;
 }
 
-[data-theme="light"] {
-  --bg-canvas: #f8fafc;
-  --bg-surface: #ffffff;
-  --bg-elevated: #f1f5f9;
-  --border-color: #cbd5e1;
-  --border-subtle: #e2e8f0;
-  --text-primary: #0f172a;
-  --text-muted: #475569;
-  --text-subtle: #64748b;
-  --accent-primary: #4f46e5;
-  --accent-glow: rgba(79, 70, 229, 0.1);
-  --accent-emerald: #059669;
-  --accent-cyan: #0891b2;
+:root {
+  color-scheme: dark;
+}
+
+html {
+  background: #000;
 }
 
 body {
   background-color: transparent;
-  color: var(--text-primary);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  color: #fff;
 }
 
-/* Accessibility: WCAG 2.2 focus styles */
+/* Glass surface used by every card on the site */
+@utility glass {
+  background-color: rgb(255 255 255 / 0.05);
+  border: 1px solid rgb(255 255 255 / 0.1);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* The single brand gradient, with a slow light sweep */
+@utility text-gradient {
+  background-image: linear-gradient(90deg, #818cf8, #22d3ee, #818cf8);
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: sheen 6s linear infinite;
+}
+
+@keyframes sheen {
+  to {
+    background-position: 200% center;
+  }
+}
+
+/* Lenis smooth scrolling */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* Accessibility: visible focus everywhere */
 :focus-visible {
-  outline: 2px solid var(--accent-primary);
-  outline-offset: 2px;
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 6px;
 }
 
-/* Skip link for keyboard users */
 .skip-link {
   position: absolute;
   top: -100px;
   left: 1rem;
-  background: var(--accent-primary);
-  color: #ffffff;
+  background: var(--color-accent);
+  color: #fff;
   padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
+  border-radius: 9999px;
   font-weight: 600;
   z-index: 100;
   transition: top 0.15s ease;
 }
-
 .skip-link:focus {
   top: 1rem;
 }
 
-/* Callout in MDX */
-.callout {
-  border-left: 3px solid var(--accent-primary);
-  background: var(--bg-surface);
+/* Long-form MDX content */
+.prose-site {
+  color: rgb(209 213 219);
+  line-height: 1.8;
+}
+.prose-site h2 {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 2.5rem 0 1rem;
+  letter-spacing: -0.01em;
+}
+.prose-site h3 {
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 2rem 0 0.75rem;
+}
+.prose-site p {
+  margin: 1rem 0;
+}
+.prose-site ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+  margin: 1rem 0;
+}
+.prose-site ol {
+  list-style: decimal;
+  padding-left: 1.25rem;
+  margin: 1rem 0;
+}
+.prose-site li {
+  margin: 0.4rem 0;
+}
+.prose-site a {
+  color: #a5b4fc;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.prose-site a:hover {
+  color: #fff;
+}
+.prose-site strong {
+  color: #fff;
+}
+.prose-site code {
+  background: rgb(255 255 255 / 0.08);
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.375rem;
+  font-size: 0.9em;
+}
+.prose-site pre {
+  background: rgb(0 0 0 / 0.5);
+  border: 1px solid rgb(255 255 255 / 0.1);
+  border-radius: 1rem;
   padding: 1rem 1.25rem;
-  border-radius: 0 0.5rem 0.5rem 0;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+.prose-site pre code {
+  background: none;
+  padding: 0;
+}
+.prose-site blockquote,
+.callout {
+  border-left: 3px solid var(--color-accent);
+  background: rgb(255 255 255 / 0.04);
+  padding: 1rem 1.25rem;
+  border-radius: 0 0.75rem 0.75rem 0;
   margin: 1.5rem 0;
 }
 
-/* Terminal scanline subtle effect */
-.terminal-window {
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 20px 0 var(--accent-glow);
-}
-
 @media (prefers-reduced-motion: reduce) {
-  * {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
