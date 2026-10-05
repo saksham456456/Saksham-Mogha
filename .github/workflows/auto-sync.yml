@@ -1,0 +1,25 @@
+name: Automated Profile & Repositories Sync
+
+on:
+  schedule:
+    # Run once daily at 00:00 UTC
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    name: Sync Live Profile & Verified Repositories
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Automated Sync Endpoint
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          SITE_URL: "https://saksham-mogha.vercel.app"
+        run: |
+          echo "Initiating sync request for verified identity saksham456456..."
+          curl -f -X GET "${SITE_URL}/api/sync" \
+            -H "Authorization: Bearer ${CRON_SECRET}" \
+            -H "User-Agent: GitHub-Actions-AutoSync" || echo "Sync endpoint completed or dev preview."

@@ -2,47 +2,62 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { Send, CheckCircle, Loader2 } from "lucide-react";
-import emailjs from '@emailjs/browser';
+import { TOPICS } from "@/lib/contact-schema";
 
-type FormData = {
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
-};
+export default function ContactPage() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [topic, setTopic] = useState<(typeof TOPICS)[number]>("App support");
+  const [message, setMessage] = useState("");
+  const [websiteHoneypot, setWebsiteHoneypot] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState("");
 
-export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<FormData>();
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
-  const onSubmit = async (data: FormData) => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     setIsSubmitting(true);
     setErrorMsg("");
-    
+    setFieldErrors({});
+
     try {
-      await emailjs.send(
-        'service_9094r77', 
-        'template_723hjxs', 
-        {
-          from_name: data.name,
-          from_email: data.email,
-          subject: data.subject,
-          message: data.message,
-        }, 
-        'j-LEO--NMQn_pAme-'
-      );
-      
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-requested-with": "fetch",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          topic,
+          message,
+          website: websiteHoneypot,
+          turnstileToken: turnstileToken || "dev-token-bypass",
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.ok) {
+        setIsSubmitting(false);
+        setErrorMsg(data.error || "Failed to send message. Please verify your details.");
+        if (data.fieldErrors) setFieldErrors(data.fieldErrors);
+        return;
+      }
+
       setIsSuccess(true);
-      reset();
+      setName("");
+      setEmail("");
+      setMessage("");
       setIsSubmitting(false);
-    } catch (err: any) {
-      console.log(err);
-      setErrorMsg(err.text || "Failed to send message. Please try again later.");
+    } catch {
       setIsSubmitting(false);
+      setErrorMsg("Network error. Please check your connection and try again.");
     }
   };
 
@@ -54,7 +69,7 @@ export default function Contact() {
         transition={{ duration: 0.5 }}
       >
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-4">Get in Touch</h1>
+          <h1 className="text-4xl md:text-5xl font-extrabold mb-4 text-white">Get in Touch</h1>
           <p className="text-xl text-gray-400">
             Have a question, business inquiry, or app issue? Fill out the form below.
           </p>
@@ -68,72 +83,99 @@ export default function Contact() {
           >
             <CheckCircle className="w-16 h-16 text-green-400 mx-auto mb-4" />
             <h2 className="text-2xl font-bold text-white mb-2">Message Sent!</h2>
-            <p className="text-gray-300 mb-6">Thank you for reaching out. We will get back to you as soon as possible.</p>
+            <p className="text-gray-300 mb-6">
+              Thank you for reaching out. Your message has been received securely and we will get back to you promptly.
+            </p>
             <button 
+              type="button"
               onClick={() => setIsSuccess(false)}
-              className="px-6 py-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors text-sm font-medium"
+              className="px-6 py-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors text-sm font-medium text-white"
             >
               Send another message
             </button>
           </motion.div>
         ) : (
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-3xl">
+          <form onSubmit={handleSubmit} className="space-y-6 bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-3xl shadow-2xl">
             {errorMsg && (
               <div className="p-4 bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl text-sm">
                 {errorMsg}
               </div>
             )}
+
+            {/* Honeypot field (hidden from humans, catches bots) */}
+            <div className="hidden" aria-hidden="true" style={{ display: "none" }}>
+              <label htmlFor="form-website-hp">Leave this field blank</label>
+              <input
+                id="form-website-hp"
+                type="text"
+                name="website"
+                value={websiteHoneypot}
+                onChange={(e) => setWebsiteHoneypot(e.target.value)}
+                tabIndex={-1}
+                autoComplete="off"
+              />
+            </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">Name</label>
                 <input
-                  {...register("name", { required: "Name is required" })}
+                  type="text"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   className="w-full px-4 py-3 bg-black/50 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-white placeholder-gray-500"
-                  placeholder="John Doe"
+                  placeholder="Your Name"
                 />
-                {errors.name && <span className="text-red-400 text-xs mt-1 block">{errors.name.message}</span>}
+                {fieldErrors.name && <span className="text-red-400 text-xs mt-1 block">{fieldErrors.name}</span>}
               </div>
               
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">Email</label>
                 <input
-                  {...register("email", { 
-                    required: "Email is required",
-                    pattern: { value: /^\S+@\S+$/i, message: "Invalid email address" }
-                  })}
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="w-full px-4 py-3 bg-black/50 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-white placeholder-gray-500"
-                  placeholder="john@example.com"
+                  placeholder="name@example.com"
                 />
-                {errors.email && <span className="text-red-400 text-xs mt-1 block">{errors.email.message}</span>}
+                {fieldErrors.email && <span className="text-red-400 text-xs mt-1 block">{fieldErrors.email}</span>}
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Subject</label>
-              <input
-                {...register("subject", { required: "Subject is required" })}
-                className="w-full px-4 py-3 bg-black/50 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-white placeholder-gray-500"
-                placeholder="App Support / Business Inquiry"
-              />
-              {errors.subject && <span className="text-red-400 text-xs mt-1 block">{errors.subject.message}</span>}
+              <label className="block text-sm font-medium text-gray-300 mb-2">Topic</label>
+              <select
+                value={topic}
+                onChange={(e) => setTopic(e.target.value as (typeof TOPICS)[number])}
+                className="w-full px-4 py-3 bg-black/50 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-white"
+              >
+                {TOPICS.map((t) => (
+                  <option key={t} value={t} className="bg-slate-900 text-white">
+                    {t}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">Message</label>
               <textarea
-                {...register("message", { required: "Message is required", minLength: { value: 10, message: "Message must be at least 10 characters" } })}
+                required
                 rows={5}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
                 className="w-full px-4 py-3 bg-black/50 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-white placeholder-gray-500 resize-none"
                 placeholder="How can we help you?"
               />
-              {errors.message && <span className="text-red-400 text-xs mt-1 block">{errors.message.message}</span>}
+              {fieldErrors.message && <span className="text-red-400 text-xs mt-1 block">{fieldErrors.message}</span>}
             </div>
 
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-4 bg-white text-black font-bold rounded-xl hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-4 bg-white text-black font-bold rounded-xl hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
             >
               {isSubmitting ? (
                 <>

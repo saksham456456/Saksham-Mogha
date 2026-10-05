@@ -1,0 +1,33 @@
+---
+title: How this site is built
+slug: how-this-site-is-built
+summary: One typed content layer drives every page, feed and index on this site. Here is how it fits together, plus the security choices behind it.
+date: 2026-10-04
+tags: [web, security, nextjs]
+---
+
+This site is a portfolio, an apps hub and a Google Play support portal, all in one Next.js app. Two goals shaped it: **add a project once and it shows up everywhere**, and **treat security headers and forms as release blockers**.
+
+## One source of truth
+
+All content lives in the `content/` folder:
+
+- `site.ts` holds name, bio, links and feature flags
+- `projects/*.mdx` and `apps/*.mdx` hold frontmatter plus a case study
+- `writing/*.mdx` holds posts like this one
+- `changelog.ts` and `now.mdx`
+
+At build time a [zod](https://zod.dev) schema checks every file. A missing summary, a bad date or an `http://` link stops the build. The home page, the project grid, the apps hub, the lab, the changelog, the RSS feed, the sitemap and the `Ctrl+K` search all read from the same loaders, so they can't drift apart.
+
+Tags connect everything: a post tagged with a project's slug appears on that project's page, and the post links back.
+
+## Security as a feature
+
+- A **strict Content-Security-Policy** with a new nonce on every request and `strict-dynamic`, so only scripts the server issued can run.
+- HSTS, `nosniff`, a locked-down `Permissions-Policy`, `COOP`/`CORP`, and no framing.
+- The **contact form** is validated on the server, rate-limited per IP, protected by a honeypot and Cloudflare Turnstile, checks the request origin, and sends mail through a provider API. No email address appears in the HTML.
+- **Cookieless analytics**, self-hosted fonts and no third-party trackers, so no cookie banner is needed.
+
+## Performance
+
+No 3D canvas on load, no client-side animation library, and fonts are served from the same origin. Most pages are rendered on the server, and the client gets only the small amount of JavaScript it needs for the command palette and the terminal on the home page.

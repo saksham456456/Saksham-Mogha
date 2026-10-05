@@ -1,13 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { HelpCircle, Mail, AlertTriangle, FileText } from "lucide-react";
+import { HelpCircle, Mail, FileText } from "lucide-react";
 import Link from "next/link";
 
 const faqs = [
   {
     question: "How do I report a bug or issue?",
-    answer: "Please use the Contact page or send an email directly to support with a detailed description of the issue, your device model, and the Android version you are running."
+    answer: "Please use the Contact page with a detailed description of the issue, your device model, and the Android version you are running."
   },
   {
     question: "How can I request a refund?",
@@ -20,6 +20,10 @@ const faqs = [
   {
     question: "Where can I find the Privacy Policy?",
     answer: "You can view our comprehensive Privacy Policy by clicking the link in the footer or navigating to the Privacy Policy page on this website."
+  },
+  {
+    question: "How do I request data deletion?",
+    answer: "Submit a request on our Contact form selecting 'Data deletion request' as the topic. We process and purge all corresponding data records within 30 days."
   }
 ];
 
@@ -32,7 +36,7 @@ export default function Support() {
         transition={{ duration: 0.5 }}
       >
         <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-6">App Support & FAQ</h1>
+          <h1 className="text-4xl md:text-5xl font-extrabold mb-6 text-white">App Support & FAQ</h1>
           <p className="text-xl text-gray-400">
             Need help with an app developed by Saksham Mogha? You are in the right place.
           </p>
@@ -42,7 +46,7 @@ export default function Support() {
           <div className="p-6 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl flex items-start gap-4">
             <Mail className="w-8 h-8 text-indigo-400 flex-shrink-0" />
             <div>
-              <h3 className="text-lg font-semibold mb-2">Direct Contact</h3>
+              <h3 className="text-lg font-semibold mb-2 text-white">Direct Contact</h3>
               <p className="text-gray-400 text-sm mb-4">Send a message directly to the developer for specific issues.</p>
               <Link href="/contact" className="text-indigo-400 hover:text-indigo-300 font-medium text-sm">
                 Go to Contact Form →
@@ -53,7 +57,7 @@ export default function Support() {
           <div className="p-6 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl flex items-start gap-4">
             <FileText className="w-8 h-8 text-pink-400 flex-shrink-0" />
             <div>
-              <h3 className="text-lg font-semibold mb-2">Policies</h3>
+              <h3 className="text-lg font-semibold mb-2 text-white">Policies</h3>
               <p className="text-gray-400 text-sm mb-4">Review how your data is handled in our applications.</p>
               <Link href="/privacy" className="text-pink-400 hover:text-pink-300 font-medium text-sm">
                 Read Privacy Policy →
@@ -62,8 +66,8 @@ export default function Support() {
           </div>
         </div>
 
-        <h2 className="text-2xl font-bold mb-8 flex items-center gap-2">
-          <HelpCircle className="w-6 h-6" /> Frequently Asked Questions
+        <h2 className="text-2xl font-bold mb-8 flex items-center gap-2 text-white">
+          <HelpCircle className="w-6 h-6 text-indigo-400" /> Frequently Asked Questions
         </h2>
 
         <div className="space-y-4">
@@ -75,7 +79,7 @@ export default function Support() {
               transition={{ delay: index * 0.1 }}
               className="p-6 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl"
             >
-              <h3 className="text-lg font-medium mb-2">{faq.question}</h3>
+              <h3 className="text-lg font-medium mb-2 text-white">{faq.question}</h3>
               <p className="text-gray-400 text-sm leading-relaxed">{faq.answer}</p>
             </motion.div>
           ))}

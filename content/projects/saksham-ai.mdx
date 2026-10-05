@@ -1,0 +1,32 @@
+---
+title: Saksham-AI
+slug: saksham-ai
+summary: A large language model that runs entirely in the browser with WebLLM and WebGPU, with no API keys, no server costs and no data leaving the device.
+type: web
+status: live
+date: 2026-04-01
+featured: true
+stack: [Next.js, TypeScript, WebLLM, WebGPU, Zustand]
+tags: [ai, on-device-ml, webgpu]
+links:
+  live: https://saksham-ai-gold.vercel.app/
+  repo: https://github.com/saksham456456/Saksham-AI
+source: https://github.com/saksham456456/Saksham-AI
+---
+
+## Problem
+
+Most AI chat apps send every prompt to a remote API. That costs money per request and means your conversation leaves your machine.
+
+## Approach
+
+Saksham-AI loads a quantized model into the browser and runs inference locally on the GPU through **WebLLM** and **WebGPU**. Once the model is cached, there is no API key to manage and no per-request server cost, and prompts stay on the device.
+
+## Key decisions
+
+- **On-device inference over a hosted API**, trading a one-time model download for privacy and zero running cost.
+- **Next.js + TypeScript** for the app shell, with **Zustand** for lightweight client state.
+
+## Stack
+
+Next.js · TypeScript · WebLLM · WebGPU · Zustand

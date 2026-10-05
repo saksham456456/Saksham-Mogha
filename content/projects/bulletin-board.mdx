@@ -1,0 +1,28 @@
+---
+title: SAKSHAM.DEV Bulletin Board
+slug: bulletin-board
+summary: A 3D interactive bulletin board and lightweight CMS for SAKSHAM.DEV announcements, with a draft/publish workflow and a Basic Auth admin dashboard.
+type: web
+status: live
+date: 2026-06-17
+stack: [Next.js, Tailwind CSS, Framer Motion, Supabase]
+tags: [web, cms, 3d]
+links:
+  live: https://saksham-dev-bulletin.onrender.com
+  repo: https://github.com/saksham456456/Bulletin-Board
+source: https://github.com/saksham456456/Bulletin-Board
+---
+
+## Idea
+
+App updates, releases and roadmap notes, pinned to a board that looks and feels like a real cork notice board.
+
+## Key decisions
+
+- **CSS 3D transforms** with cork textures and lighting, instead of a WebGL scene.
+- **Seed-based random tilt** per card plus spring animations, so the board feels organic but stays the same between visits.
+- **Admin dashboard behind Basic Auth middleware** for publishing, updating and drafting notices, backed by Supabase Postgres.
+
+## Stack
+
+Next.js · Tailwind CSS · Framer Motion · Supabase
